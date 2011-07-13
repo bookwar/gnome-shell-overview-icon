@@ -1,0 +1,7 @@
+{
+    "shell-version": ["3.0"],
+    "uuid": "overview-icon@admin.bookwar.info",
+    "name": "overview-icon",
+    "url": "https://github.com/bookwar/gnome-shell-overview-icon",
+    "description": "Display an icon near the window title in overview mode."
+}
