@@ -19,12 +19,17 @@
 // Author: Yichao Yu
 // Email: yyc1992@gmail.com
 
+// Changelog:
+// 2011-07-13 Aleksandra Bookwar, admin@bookwar.info
+//     Insted of big icons on windows small icons in window titles are shown.   
+
+let icon_size = 22;
+
 const Shell = imports.gi.Shell;
 const Workspace = imports.ui.workspace;
 const Lang = imports.lang;
 
 let tracker = Shell.WindowTracker.get_default();
-let icon_size = 64;
 
 let active = false;
 
@@ -49,16 +54,24 @@ function addIcon(windowClone, parentActor) {
     this._appicon.set_size(icon_size, icon_size);
     this._appicon.hide();
     parentActor.add_actor(this._appicon);
+
 }
 
 function updatePositions(cloneX, cloneY, cloneWidth, cloneHeight) {
     if (!this._appicon)
         return;
-    let iconX = cloneX + cloneWidth - this._appicon.get_width();
-    let iconY = cloneY + cloneHeight - this._appicon.get_height();
-    this._appicon.set_position(Math.floor(iconX), Math.floor(iconY));
-    this._appicon.raise_top();
-    this._appicon.show();
+    let title = this.title;
+    title.width = Math.min(title.fullWidth, cloneWidth-icon_size);
+    let titleX = cloneX + icon_size + (cloneWidth - icon_size - this.title.width) / 2;
+    let titleY = cloneY + cloneHeight + this.title._spacing;
+    title.set_position(Math.floor(titleX), Math.floor(titleY));
+
+    let appicon = this._appicon; 
+    let iconX = titleX - icon_size;
+    let iconY = titleY + Math.floor((title.height-appicon.height)/2);
+    appicon.set_position(Math.floor(iconX), Math.floor(iconY));
+    appicon.raise_top();
+    appicon.show();
 }
 
 function init() {
